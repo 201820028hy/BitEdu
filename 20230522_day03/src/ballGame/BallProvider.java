@@ -5,11 +5,6 @@ import java.util.Objects;
 import java.util.Random;
 
 public class BallProvider {
-
-	   //시스템 볼 중복체크
-	   private void checkValue() {
-	      
-	   }
 	   
 	   //볼 생성
 	   public int[] makeBall() {
