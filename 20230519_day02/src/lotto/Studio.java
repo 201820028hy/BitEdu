@@ -57,11 +57,24 @@ public class Studio {
 		System.out.println("로또 추첨기 START");
 		LottoBall[] selectedBalls = machine.startMachine();
 		
+		//20230522 day3 수정
+		//정렬로직(선택정렬)
+		for(int i = 0 ; i < selectedBalls.length; i++) {
+			for(int j = i+1; j < selectedBalls.length; j++) {
+				LottoBall ball = selectedBalls[i];
+				if(ball.getNumber() > selectedBalls[j].getNumber()) {
+					LottoBall nextBall = selectedBalls[j];
+					selectedBalls[j] = ball;
+					selectedBalls[i] = nextBall;
+				}
+			}
+		}
+		
 		//기존 : 
-//		for(LottoBall ball : selectedBalls) {
-//			//System.out.println(ball.getNumber() + " 번"); //통상의 방법
-//			System.out.println(ball + " 번"); //toString 호출
-//		}
+		for(LottoBall ball : selectedBalls) {
+			//System.out.println(ball.getNumber() + " 번"); //통상의 방법
+			System.out.println(ball + " 번"); //toString 호출
+		}
 		System.out.println("로또 추첨기 END");
 	}
 

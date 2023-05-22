@@ -27,7 +27,7 @@ public class LottoMachine {
 			Collections.shuffle(balls); //석어주는 코드
 			selectedBalls[i] = this.getBall();
 			
-			System.out.println(selectedBalls[i] + "번 ");
+			//System.out.println(selectedBalls[i] + "번 ");
 			try {
 				Thread.sleep(1500);
 			} catch (Exception e) {
