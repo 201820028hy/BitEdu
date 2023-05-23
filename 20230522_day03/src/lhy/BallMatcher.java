@@ -1,10 +1,10 @@
 package lhy;
 
 import java.util.Arrays;
-import java.util.List;
 
 public class BallMatcher {
 	private int[] systemBalls;
+	
 	public BallMatcher() {
 		BallProvider provider = new BallProvider();
 		this.systemBalls = provider.makeBall();
@@ -14,7 +14,7 @@ public class BallMatcher {
       boolean bool = true;
 
       System.out.println("유저 볼 : " + Arrays.toString(userBalls));
-      System.out.println("시스템 볼 : " + Arrays.toString(systemBalls));
+      //System.out.println("시스템 볼 : " + Arrays.toString(systemBalls));
       
       int strike = 0;
       int ball = 0;
@@ -31,10 +31,11 @@ public class BallMatcher {
       }
       
       System.out.println(strike + " 스트라이크 " + ball + " 볼");
-      if(strike ==4) {
-    	  return false;
+      if(strike == 4) {
+    	  bool = false;
       }
       
       return bool;
    }
+   
 }

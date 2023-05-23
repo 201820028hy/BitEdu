@@ -1,5 +1,6 @@
 package lhy;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 /*
@@ -14,12 +15,23 @@ public class BallService {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 
+		//시스템 볼 생성
 		BallMatcher match = new BallMatcher();
-		
+		BallService service = new BallService();
+
+		System.out.println("게임을 시작합니다.");
+		service.startGame(match);
+	}
+	
+	public void startGame(BallMatcher match) {
 		while(true) {
+			System.out.println("-------------------------------------");
+			System.out.println("4자리 숫자를 입력해주세요.(기권하시려면 '기권'을 입력하세요.)");
 			//입력 받기
 			Scanner scan = new Scanner(System.in);
 			String scanStr = scan.next();
+			
+			//기권 의사 묻고 종료
 			if("기권".equals(scanStr)) {
 				System.out.println("기권하셨습니다. 게임을 종료합니다.");
 				break;
@@ -35,25 +47,28 @@ public class BallService {
 				userBalls[i] = Integer.parseInt(scanArr[i]);
 			}
 			
-			BallProvider provider = new BallProvider();
-			if(!provider.checkValue(userBalls)) {
+			if(!checkValue(userBalls)) {
 				System.out.println("중복되지 않은 4자리 숫자를 입력해주세요.");
 				continue;
 			}
-			
+
+			//기권 의사 묻고 안한다 하거나 4스트라이크면 종료
 			if(!match.matcher(userBalls)) {
 				System.out.println("4 스트라이크로 게임을 종료합니다.");
 				break;
 			}
-			//랜덤한 숫자 4자리 생성
-			
-			//받은 수와 랜덤한 수 2중for문 돌며 체크
-			
-			//스트라이크 데이터 입력, 볼 데이터 입력
-			
-			//기권 의사 묻고 안한다 하거나 4스트라이크면 종료
 		}
 	}
 	
-
+	//시스템 볼 중복체크
+   public boolean checkValue(int[] balls) {
+	   ArrayList<Integer> setBalls = new ArrayList<Integer>();
+	  for(int i = 0; i < balls.length; i++) {
+		  if(setBalls.contains(balls[i])) {
+			  return false;
+		  }
+		  setBalls.add(balls[i]);
+	  }
+      return true;
+   }
 }
