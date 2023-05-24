@@ -26,11 +26,11 @@ public class GameHelper {
 		int[] checker = new int[10];
 		for(int i=0;i<tryGameBall.length();i++) {
 			int index = Integer.parseInt(String.valueOf(tryGameBall.charAt(i)));
-			if(checker[index]!=0) {
+			if(checker[index]!=0) { // 0의 의미는 숫자가 들어오지 않았다.
 				tryBall = null;
 				break;
 			} else {
-				checker[index] = index;
+				checker[index] = index+1; // 0이라는 숫자가 들어오는 것을 방
 				tryBall[i] = String.valueOf(index);
 			}
 		}
