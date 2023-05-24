@@ -4,7 +4,7 @@ package exam.lhy;
 /*
  * 데이터 클래스
  */
-public class Student implements Comparable<Student> {
+public class Student implements Comparable<Student> { //Comparator<StudentDTO>도 가능
 	private int stdNum;
 	private String email;
 	private int kor;
@@ -123,4 +123,18 @@ public class Student implements Comparable<Student> {
 			return -1;
 		}
 	}
+	
+	//강사님 버전
+	/*
+	private void compare(StudentDTO o1, StudentDTO o2) {
+		// TODO Auto-generated method stub
+
+		int order = 0;
+		order = (o1.getKor()+o1.getEng()) - (o2.getKor()+o2.getEng());
+		if(order == 0) {
+			//이메일 내림차순
+			order = o1.getEmail().compareTo(o2.getEmail());
+		}
+		return order;
+	}*/
 }
