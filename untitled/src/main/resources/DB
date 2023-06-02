@@ -1,0 +1,4 @@
+DB_URL=jdbc:mysql://localhost:3306/thisisjava
+DB_USER=root
+DB_PASSWORD=Mdlgpdbs13578
+DRIVER=com.mysql.cj.jdbc.Driver

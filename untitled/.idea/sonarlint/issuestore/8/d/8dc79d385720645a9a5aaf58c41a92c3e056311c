@@ -1,0 +1,10 @@
+
+s	java:S135$"YReduce the total number of break and continue statements in this loop to use at most one.(À­ãüÿÿÿÿ
+n	java:S135;"YReduce the total number of break and continue statements in this loop to use at most one.(ğØà­
+n
+java:S1450"SRemove the "flag" field and declare it as a local variable in the relevant methods.(ˆòåİÿÿÿÿÿ
+S	java:S1069"9Replace this use of System.out or System.err by a logger.(õ»÷ñüÿÿÿÿ
+N	java:S106G"9Replace this use of System.out or System.err by a logger.(Ş‘Í²
+S	java:S106I"9Replace this use of System.out or System.err by a logger.(ªÓ¼áşÿÿÿÿ
+D
+java:S1128".Remove this unused import 'java.util.Objects'.(¼¸õ›

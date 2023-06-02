@@ -1,0 +1,9 @@
+
+k
+java:S1104"UMake countBall a static final constant or non-public and provide accessors if needed.(³ïªÎ
+E
+java:S1444"/Make this "public static countBall" field final(³ïªÎ
+3
+java:S2386"Make this member "protected".(³ïªÎ
+E
+java:S1481"*Remove this unused "balls" local variable.(¶ž¹°ùÿÿÿÿ

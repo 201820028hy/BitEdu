@@ -1,0 +1,15 @@
+
+>
+java:S5164"!Call "remove()" on "threadLocal".(ğØÌ›8Ø÷õÚ†1
+t
+java:S2142"^Either re-interrupt this method or rethrow the "InterruptedException" that can be caught here.(ä ¹€
+M	java:S106"9Replace this use of System.out or System.err by a logger.(è¶i
+N	java:S106"9Replace this use of System.out or System.err by a logger.(Ñ¯³½
+N	java:S106"9Replace this use of System.out or System.err by a logger.(«¦ù—
+‚
+java:S1217""`Call the method Thread.start() to execute the content of the run() method in a dedicated thread.(½ÔŸùúÿÿÿÿ8Ìé÷Ú†1
+t
+java:S2142*"^Either re-interrupt this method or rethrow the "InterruptedException" that can be caught here.(ä ¹€
+N	java:S106/"9Replace this use of System.out or System.err by a logger.(ÑÕ‚
+‚
+java:S12171"`Call the method Thread.start() to execute the content of the run() method in a dedicated thread.(›İ·Ğÿÿÿÿÿ8Æ©İá†1
