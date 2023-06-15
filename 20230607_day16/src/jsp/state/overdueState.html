@@ -1,0 +1,271 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="EUC-KR">
+<title>도서 관리 시스템</title>
+<link href="../../css/layout.css" rel="stylesheet" type="text/css">
+<script src="https://kit.fontawesome.com/770bda6b86.js" crossorigin="anonymous"></script>
+
+<script src="../../json/BOOKDATA.json" charset="utf8"></script>
+<script src="../../json/OVERDUEDATA.json" charset="utf8"></script>
+<script src="../../json/USERDATA.json" charset="utf8"></script>
+<script type="text/javascript">
+	window.onload = function() {
+		getJson(1);
+		setPage(1);
+	}
+	
+	function setPage(pageNo) {
+		var length = document.getElementById("total").value;
+		var pageLi = document.getElementById("pageUl").querySelectorAll(".paging_num");
+		//페이징 초기화
+		for(var i = 0; i < pageLi.length; i++) {
+			pageLi[i].remove();
+		}
+		
+		//페이징 추가
+		if(length - ((pageNo-1)*10) < 10) {
+			var className = "paging_num flex_1 default_check";
+			var str = '<li class="'+className+'"><a href="javascript:getJson(' + pageNo + ', 1)">' + 1 + '</a></li>';
+			document.getElementsByClassName("paging_li")[2].insertAdjacentHTML("beforeBegin", str);
+		} else {
+			var num = pageNo;
+			var liIndex = 1;
+			for(var i = pageNo*10; i <= length; i++) {
+				var className = num == pageNo ? "paging_num flex_1 default_check" : "paging_num flex_1";
+				var str = '<li class="'+className+'"><a href="javascript:getJson(' + num + ', ' + liIndex + ')">' + num + '</a></li>';
+				document.getElementsByClassName("paging_li")[2].insertAdjacentHTML("beforeBegin", str);
+				if(liIndex % 10 == 0) break;
+				num++;
+				liIndex++;
+			}
+		}
+		
+		//페이징 변화 있을 때 목록 재검색
+		if(pageNo > 1) getJson(pageNo, 1);
+	}
+	
+	function getJson(pageNo, num) {
+		if(document.querySelector(".default_check") != null) {
+			document.querySelector(".default_check").setAttribute("class", "paging_num flex_1");
+			document.querySelectorAll(".paging_num")[num-1].setAttribute("class", "paging_num flex_1 default_check");
+		}
+		
+		if(!pageNo) pageNo = document.getElementById("pageUl").querySelectorAll(".paging_num")[document.getElementById("pageUl").querySelectorAll(".paging_num").length-1];
+		document.getElementById("pageNo").value = pageNo;
+		var list = document.getElementById("book_list");
+		var str = "";
+		list.innerHTML = str;
+		
+		var overdueList = overdue.filter(function(overJson) {
+			overJson.title = data.filter(dataJson => dataJson.book_no == overJson.book_no).map(dataJson => dataJson.title)[0];
+			overJson.user_name = user.filter(userJson => userJson.user_no == overJson.user_no).map(userJson => userJson.user_name)[0];
+			if(!overJson.return_date) {
+				var today = new Date();
+				var overDay = new Date(overJson.rental_date);
+				var over_day = parseInt((today-overDay)/(1000*60*60*24));
+				if(over_day > 0) {
+					overJson.over_day = over_day;
+					return true;
+				}
+			}
+		})
+		overdueList = overdueList.filter(function(overJson) {
+			var txtBool = true;
+			if(document.getElementById("sch_div").value == "book_no") {
+				txtBool = document.getElementById("sch_div_txt").value == overJson.book_no ? true : false;  
+			} else if(document.getElementById("sch_div").value == "title") {
+				txtBool = overJson.title.indexOf(document.getElementById("sch_div_txt").value) > -1 ? true : false;
+			} else if(document.getElementById("sch_div").value == "user_name") {
+				txtBool = overJson.user_name.indexOf(document.getElementById("sch_div_txt").value) > -1 ? true : false;
+			} else if(document.getElementById("sch_div").value == "user_no") {
+				txtBool = overJson.user_no == document.getElementById("sch_div_txt").value ? true : false;
+			} else if(document.getElementById("sch_div_txt").value != '') {
+				txtBool = 
+					document.getElementById("sch_div_txt").value == overJson.book_no || overJson.title.indexOf(document.getElementById("sch_div_txt").value) > -1 ||
+					overJson.user_name.indexOf(document.getElementById("sch_div_txt").value) > -1 || overJson.user_no == document.getElementById("sch_div_txt").value
+					? true : false;
+			}
+			
+			var dateStartBool = true;
+			var dateEndBool = true;
+			if(document.getElementById("sch_st_dt").value) {
+				dateStartBool = new Date(document.getElementById("sch_st_dt").value) <= new Date(overJson.rental_date) ? true : false;  
+			}
+			if(document.getElementById("sch_ed_dt").value) {
+				dateEndBool = new Date(document.getElementById("sch_ed_dt").value) >= new Date(overJson.rental_date) ? true : false;
+			}
+			return txtBool && dateEndBool;
+		})
+		
+		switch(document.getElementById("sch_sort").value) {
+			case "over_day" :
+				overdueList.sort((a, b) => b.over_day - a.over_day)
+				break;
+			case "title" :
+				overdueList.sort(function(a, b) {
+					if(a.title < b.title) return -1;
+					else return 1;
+				})
+				break;
+			case "user_name" :
+				overdueList.sort(function(a, b) {
+					if(a.user_name < b.user_name) return -1;
+					else return 1;
+				})
+				break;
+		}
+		
+		for(var i = (pageNo-1)*10; i < overdueList.length; i++) {
+			var json = overdueList[i];
+			str += "<tr>";
+			str += "<td>"+json.book_no+"</td>";
+			str += "<td>"+json.title+"</td>";
+			str += "<td>"+json.user_no+"</td>";
+			str += "<td>"+json.user_name+"</td>";
+			str += "<td>"+json.rental_date+"</td>";
+			str += "<td>"+json.over_day+"</td>";
+			str += "<td><button type='button' class='btn_s_red' onclick='window.href=\"totalRent.html\"'>반 납</button></td>";
+			str += "</tr>";
+			if((i+1)/(pageNo*10) == 1) {
+				break;
+			}
+		}
+		list.innerHTML = str;
+		document.getElementById("total").value = overdueList.length;
+		document.getElementById("total_cnt").innerHTML = "전체 " + overdueList.length + "건";
+	}
+</script>
+</head>
+<body>
+	<div class="wrapper">
+		<nav class="menu_bar">
+	        <ul class="menu_bar_category">
+	            <h1 class="menu_bar_header">
+	                <i class="fa-solid fa-book" style="color: #3373e1;"></i>
+	                도서 대출 시스템
+	            </h1>
+	
+	            <li><img class="menu_icon" src="../../images/layout/menu_home.svg"/><a href="home.html">홈</a></li>
+				<li><img class="menu_icon" src="../../images/layout/menu_book.svg"/><a href="totalRent.html">대출/반납</a></li>
+				<li>
+					<div class="menu_div">
+						<img class="menu_icon" src="../../images/layout/menu_list.svg"/>
+						<a href="#">현황</a>
+						<img class="submenu_icon" src="../../images/layout/menu_arrow.svg" class="menu_icon_svg">
+					</div>
+					<ul style="width:100%;" class="submenu">
+	                    <li><a href="totalState.html">전체 대출 목록</a></li>
+	                    <li><a href="turnoverState.html">대출 회전율 정보</a></li>
+	                    <li><a href="overduePerson.html">연체 회원 목록</a></li>
+	                    <li><a href="overdueState.html">연체 도서 목록</a></li>
+	                </ul>
+				</li>
+			</ul>
+	        <div class="menu_bar_footer">
+	            <span> <i class="fa-solid fa-user"></i>     관리자</span>
+	            <button class="btn_logout">로그아웃</button>
+	        </div>
+	    </nav>
+		<main>
+			<div>
+				<div class="contents">
+					<div class="menu_info">
+						<div class="menu_title">
+							<h1>연체 도서 목록</h1>
+						</div>
+						<div class="flex_1"></div>
+						<div class="menu_label">
+							<img alt="" src="../../images/layout/menu_home.svg">
+							<label>관리자 | 현황 | 연체 도서 목록</label>
+						</div>
+					</div>
+					<div class="content_section">
+						<form>
+							<ul>
+								<li>
+									<select id="sch_div">
+										<option value="">전체</option>
+										<option value="book_no">도서 번호</option>
+										<option value="title">도서명</option>
+										<option value="user_name">회원명</option>
+										<option value="user_no">회원 번호</option>
+									</select>
+								</li>
+								<li class="flex_1">
+									<input type="text" placeholder="검색어를 입력하세요" id="sch_div_txt" name="sch_div_txt"/>
+								</li>
+								<li>
+									<button type="button" class="btn_m_blue" onclick="getJson(1, 1)">검 색</button>
+								</li>
+							</ul>
+							<ul>
+								<li>
+									<input type="text" placeholder="날짜 - 시작" id="sch_st_dt" name="sch_st_dt"/>
+								</li>
+								<li>~</li>
+								<li>
+									<input type="text" placeholder="날짜 - 종료" id="sch_ed_dt" name="sch_ed_dt"/>
+								</li>
+								<li>
+									<button type="button" class="btn_m_blue" onclick="getJson(1, 1)">검 색</button>
+								</li>
+							</ul>
+						</form>
+					</div>
+					
+					<div class="content_section">
+						<input type="hidden" id="pageNo" name="pageNo" value="1"/>
+						<input type="hidden" id="total" name="total" value="0"/>
+						<div class="sort_tbl">
+							<label><b id="total_cnt"></b></label>
+							<label>|</label>
+							<label>정렬 : </label>
+							<select id="sch_sort" onchange="getJson(1)">
+								<option value="over_day">연체일</option>
+								<option value="title">도서명</option>
+								<option value="user_name">회원명</option>
+							</select>
+						</div>
+						<table class="overdue_tbl" border="0" cellspacing="0">
+							<colgroup>
+								<col width="10%"/>
+								<col width="*"/>
+								<col width="10%"/>
+								<col width="10%"/>
+								<col width="10%"/>
+								<col width="7%"/>
+								<col width="10%"/>
+							</colgroup>
+							<thead>
+								<tr>
+									<th>도서 번호</th>
+									<th>도서명</th>
+									<th>회원 번호</th>
+									<th>회원명</th>
+									<th>대출일</th>
+									<th>연체일</th>
+									<th>반납</th>
+								</tr>
+							</thead>
+							<tbody id="book_list">
+							</tbody>
+						</table>
+						<div class="paging_ul">
+							<ul id="pageUl">
+								<li class="paging_li" onclick="setPage(1)"><img alt="" src="../../images/layout/pages_left.svg"></li>
+								<li class="paging_li" onclick="setPage(parseInt(document.getElementById('pageNo').value) - 1)"><img alt="" src="../../images/layout/page_left.svg"></li>
+								<li class="paging_li" onclick="setPage(parseInt(document.getElementById('pageNo').value) + 1)"><img alt="" src="../../images/layout/page_right.svg"></li>
+								<li class="paging_li" onclick="setPage(parseInt(document.getElementById('pageNo').value) * 10)"><img alt="" src="../../images/layout/pages_right.svg"></li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+		</main>
+	</div>
+	<footer>
+	</footer>
+</body>
+</html>

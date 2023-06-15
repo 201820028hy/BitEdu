@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="EUC-KR">
+<title>도서 관리 시스템</title>
+<link href="../../css/layout.css" rel="stylesheet" type="text/css">
+<script src="https://kit.fontawesome.com/770bda6b86.js" crossorigin="anonymous"></script>
+</script>
+<script type="text/javascript">
+
+</script>
+</head>
+<body>
+<div class="wrapper">
+		<nav class="menu_bar">
+	        <ul class="menu_bar_category">
+	            <h1 class="menu_bar_header">
+	                <i class="fa-solid fa-book" style="color: #3373e1;"></i>
+	                도서 대출 시스템
+	            </h1>
+	
+	            <li><img class="menu_icon" src="../../images/layout/menu_home.svg"/><a href="home.html">홈</a></li>
+				<li><img class="menu_icon" src="../../images/layout/menu_book.svg"/><a href="totalRent.html">대출/반납</a></li>
+				<li>
+					<div class="menu_div">
+						<img class="menu_icon" src="../../images/layout/menu_list.svg"/>
+						<a href="#">현황</a>
+						<img class="submenu_icon" src="../../images/layout/menu_arrow.svg" class="menu_icon_svg">
+					</div>
+					<ul style="width:100%;" class="submenu">
+	                    <li><a href="totalState.html">전체 대출 목록</a></li>
+	                    <li><a href="turnoverState.html">대출 회전율 정보</a></li>
+	                    <li><a href="overduePerson.html">연체 회원 목록</a></li>
+	                    <li><a href="overdueState.html">연체 도서 목록</a></li>
+	                </ul>
+				</li>
+			</ul>
+	        <div class="menu_bar_footer">
+	            <span> <i class="fa-solid fa-user"></i>     관리자</span>
+	            <button class="btn_logout">로그아웃</button>
+	        </div>
+	    </nav>
+		<main>
+			<div>
+				<div class="contents">
+					<div class="menu_info">
+						<div class="menu_title">
+							<h1>회원가입</h1>
+						</div>
+						<div class="flex_1"></div>
+						<div class="menu_label">
+							<img alt="" src="../../images/layout/menu_home.svg">
+							<label>회원가입</label>
+						</div>
+					</div>
+					<div class="content_section">
+						<div style="display:flex;justify-content: space-between;">
+							<div>
+								<h2>사용자 정보 추가 입력</h2>
+							</div>
+							<div style="padding-right:20px; ">
+								<button id="" type="button" class="btn_m_red" onclick="window.location.href='../state/home.html'">취소</button>
+								<button id="" type="button" class="btn_m_blue" onclick="save()">저장</button>
+							</div>
+						</div>
+						<form>
+							<table class="join_tbl" cellspacing="0" border="0">
+								<colgroup>
+									<col width="15%"/>
+									<col width="*"/>
+								</colgroup>
+								<tbody>
+									<tr>
+										<th>도서 커뮤니티 가입 여부</th>
+										<td>
+											<label><input type="radio" id="comm_y" name="comm_yn" value="y" checked="checked"/> 가입</label>
+											<label><input type="radio" id="comm_n" name="comm_yn" value="n"/> 미가입</label>
+										</td>
+									</tr>
+									<tr>
+										<th>선호하는 카테고리</th>
+										<td>
+											<label><input type="checkbox" id="category1" name="category" value="1"/> 인문</label>
+											<label><input type="checkbox" id="category2" name="category" value="2"/> 문학</label>
+											<label><input type="checkbox" id="category3" name="category" value="3"/> 사회</label>
+										</td>
+									</tr>
+									<tr>
+										<th>연령대</th>
+										<td>
+											<select>
+												<option value="9">10세 미만</option>
+												<option value="10">10대</option>
+												<option value="20">20대</option>
+												<option value="30">30대</option>
+												<option value="40">40대</option>
+												<option value="50">50대</option>
+												<option value="60">60세 이상</option>
+											</select>
+										</td>
+									</tr>
+									<tr>
+										<th>자기소개</th>
+										<td><textarea></textarea></td>
+									</tr>
+								</tbody>
+							</table>
+						</form>
+					</div>
+				</div>
+			</div>
+		</main>
+	</div>
+</body>
+</html>

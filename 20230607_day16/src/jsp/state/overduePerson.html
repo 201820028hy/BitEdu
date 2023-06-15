@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="EUC-KR">
+    <title>도서 관리 시스템</title>
+    <link href="../../css/layout.css" rel="stylesheet" type="text/css">
+    <script src="https://kit.fontawesome.com/770bda6b86.js" crossorigin="anonymous"></script>
+</head>
+<body>
+<div class="wrapper">
+    <nav class="menu_bar">
+        <ul class="menu_bar_category">
+            <h1 class="menu_bar_header">
+                <i class="fa-solid fa-book" style="color: #3373e1;"></i>
+                도서 대출 시스템
+            </h1>
+
+            <li><img class="menu_icon" src="../../images/layout/menu_home.svg"/><a href="home.html">홈</a></li>
+            <li><img class="menu_icon" src="../../images/layout/menu_book.svg"/><a href="totalRent.html">대출/반납</a></li>
+            <li>
+                <div class="menu_div">
+                    <img class="menu_icon" src="../../images/layout/menu_list.svg"/>
+                    <a href="#">현황</a>
+                    <img class="submenu_icon" src="../../images/layout/menu_arrow.svg" class="menu_icon_svg">
+                </div>
+                <ul style="width:100%;" class="submenu">
+                    <li><a href="totalState.html">전체 대출 목록</a></li>
+                    <li><a href="turnoverState.html">대출 회전율 정보</a></li>
+                    <li><a href="overduePerson.html">연체 회원 목록</a></li>
+                    <li><a href="overdueState.html">연체 도서 목록</a></li>
+                </ul>
+            </li>
+        </ul>
+        <div class="menu_bar_footer">
+            <span> <i class="fa-solid fa-user"></i>관리자</span>
+            <button class="btn_logout">로그아웃</button>
+        </div>
+    </nav>
+    <main>
+        <div>
+            <div class="contents">
+                <div class="menu_info">
+                    <div class="menu_title">
+                        <h1>연체 회원 목록</h1>
+                    </div>
+                    <div class="flex_1"></div>
+                    <div class="menu_label">
+                        <img alt="" src="../../images/layout/menu_home.svg">
+                        <label>관리자 | 현황 | 연체 회원 목록</label>
+                    </div>
+                </div>
+                <div class="content_section">
+                    <form>
+                        <ul>
+                            <li>
+                                <select id="overdue_search_option">
+                                    <option value="전체">전체</option>
+                                    <option value="회원 번호">회원 번호</option>
+                                    <option value="회원명">회원명</option>
+                                </select>
+                            </li>
+                            <li class="flex_1">
+                                <input type="text" id="overdue_search_input" placeholder="검색어를 입력하세요"/>
+                            </li>
+                            <li>
+                                <button type="button" class="btn_m_blue" id="overdue_search"
+                                        onclick="checkSearch(document.getElementById('overdue_search_option').options[document.getElementById('overdue_search_option').options.selectedIndex].value)"
+                                        value="">검 색
+                                </button>
+                            </li>
+                        </ul>
+                    </form>
+                </div>
+
+                <div class="content_section">
+                    <div class="sort_tbl">
+                        <label><b>전체 2건</b></label>
+                        <label>|</label>
+                        <label>정렬 : </label>
+                        <select id="overdue_selection" onchange="sort(this.options[this.options.selectedIndex].value)">
+                            <option value="연체일수">연체일수</option>
+                            <option value="연체횟수">연체횟수</option>
+                            <option value="미반납도서">미반납도서</option>
+                            <option value="대출불가">대출불가</option>
+                            <option value="대출가능">대출가능</option>
+                        </select>
+                    </div>
+
+
+                    <table class="overdue_tbl" cellspacing="0">
+                        <colgroup>
+                            <col width="20%"/>
+                            <col width="30%"/>
+                            <col width="10%"/>
+                            <col width="10%"/>
+                            <col width="10%"/>
+                            <col width="7%"/>
+                            <col width="10%"/>
+                        </colgroup>
+                        <thead>
+                        <tr>
+                            <th>회원 번호</th>
+                            <th>회원 이름</th>
+                            <th>연체 횟수</th>
+                            <th>연체일 수</th>
+                            <th>현재 대출 도서</th>
+                            <th>미반납 도서</th>
+                            <th>대출 가능 여부</th>
+                        </tr>
+                        </thead>
+                        <tbody class="overdue_tbody">
+
+                        </tbody>
+                    </table>
+                    <div class="paging_ul">
+                        <ul>
+                            <li class="paging_li"><img alt="" src="../../images/layout/pages_left.svg"></li>
+                            <li class="paging_li"><img alt="" src="../../images/layout/page_left.svg"></li>
+                            <li class="flex_1 default_check"><a href="#">1</a></li>
+                            <li class="paging_li"><img alt="" src="../../images/layout/page_right.svg"></li>
+                            <li class="paging_li"><img alt="" src="../../images/layout/pages_right.svg"></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+<footer>
+</footer>
+</body>
+<script defer>
+    const data = [
+        {
+            "memberNo"          : "00758",
+            "memberName"        : "유호철",
+            "rentCnt"           : 5,
+            "rentDateCnt"       : 999,
+            "currentRentBookCnt": 10,
+            "nonReturnBookCnt"  : 5
+        },
+        {
+            "memberNo"          : "00001",
+            "memberName"        : "김선규",
+            "rentCnt"           : 1,
+            "rentDateCnt"       : 0,
+            "currentRentBookCnt": 0,
+            "nonReturnBookCnt"  : 0
+        },
+        {
+            "memberNo"          : "00002",
+            "memberName"        : "이혜윤",
+            "rentCnt"           : 5,
+            "rentDateCnt"       : 4,
+            "currentRentBookCnt": 3,
+            "nonReturnBookCnt"  : 2
+        },
+        {
+            "memberNo"          : "00003",
+            "memberName"        : "조현수",
+            "rentCnt"           : 1,
+            "rentDateCnt"       : 2,
+            "currentRentBookCnt": 3,
+            "nonReturnBookCnt"  : 4
+        },
+        {
+            "memberNo"          : "00004",
+            "memberName"        : "안은비",
+            "rentCnt"           : 10,
+            "rentDateCnt"       : 9,
+            "currentRentBookCnt": 8,
+            "nonReturnBookCnt"  : 7
+        }
+    ]
+
+    const tbody = document.querySelector(".overdue_tbody");
+    const btnTrue = `<button class="btn_m_blue">가능</button>`;
+    const btnFalse = `<button class="btn_s_red">불가</button>`;
+    const search = document.querySelector("#overdue_search");
+    const searchInput = document.querySelector("#overdue_search_input");
+    const searchOption = document.querySelector("#overdue_search_option");
+
+    document.addEventListener("DOMContentLoaded", () => {
+        console.log("laoded");
+        tableSetting(data);
+    });
+
+    function tableSetting(dataList) {
+        console.log(dataList);
+        tbody.innerHTML = "";
+        for (let dataValue of dataList) {
+            let tr = document.createElement("tr");
+            tr.innerHTML =
+                `<td>${dataValue.memberNo}</td>
+					<td>${dataValue.memberName}</td>
+					<td>${dataValue.rentCnt}</td>
+					<td>${dataValue.rentDateCnt}</td>
+					<td>${dataValue.currentRentBookCnt}</td>
+					<td>${dataValue.nonReturnBookCnt}</td>
+					<td>${dataValue.rentDateCnt <= 0 ? btnTrue : btnFalse}</td>`
+            tbody.appendChild(tr);
+        }
+    }
+
+    function checkSearch(value) {
+        console.log("check-search");
+        console.log("value : ", value)
+        console.log(searchInput.value);
+        if (searchInput.value === '') {
+            tableSetting(data);
+            console.log("빈값입력");
+        } else if (value === '회원번호') {
+            let sortValue = data.filter(a => {
+                if (a.memberNo.includes(searchInput.value))
+                    return a;
+            });
+            console.log(sortValue);
+            tableSetting(sortValue);
+            // 테이블조인을 해야해서 힘들것같다
+        } else if (value === '회원명') {
+            let sortValue = data.filter(a => {
+                if (a.memberName.includes(searchInput.value))
+                    return a;
+            });
+            tableSetting(sortValue);
+        } else {
+            console.log(data);
+            let sortValue = data.filter(a => {
+                if ((a.memberName.includes(searchInput.value)) || a.memberNo.includes(searchInput.value)) {
+                    return a;
+                }
+            });
+            console.log(sortValue);
+            tableSetting(sortValue);
+        }
+        searchInput.value = "";
+    }
+
+    //정렬 부분
+    function sort(value) {
+        console.log(value);
+        tbody.innerHTML = "";
+        if (value === '연체일수') {
+            let sort = data.sort((a, b) => {
+                return a.rentDateCnt - b.rentDateCnt;
+            });
+            tableSetting(sort);
+        } else if (value === '연체횟수') {
+            let sort = data.sort((a, b) => {
+                return a.rentCnt - b.rentCnt;
+            })
+            tableSetting(sort);
+
+        } else if (value === '미반납도서') {
+            let sort = data.sort((a, b) => {
+                return a.nonReturnBookCnt - b.nonReturnBookCnt;
+            })
+            tableSetting(sort);
+
+        } else if (value === '대출불가') {
+            let sort = data.filter(a => a.rentDateCnt > 0)
+                .map(a => a);
+            tableSetting(sort);
+
+        } else if (value === '대출가능') {
+            let sort = data.filter(a => a.rentDateCnt <= 0)
+                .map(a => a);
+            tableSetting(sort);
+
+        }
+    }
+</script>
+</html>

@@ -1,0 +1,44 @@
+const user = [
+	{
+		"user_no" : 1,
+		"user_name" : "홍길동",
+		"grade_code" : 1,
+		"overdue_date" : null
+	},
+	{
+		"user_no" : 2,
+		"user_name" : "이순신",
+		"grade_code" : 3,
+		"overdue_date" : null
+	},
+	{
+		"user_no" : 3,
+		"user_name" : "강감찬",
+		"grade_code" : 1,
+		"overdue_date" : "2023-06-19"
+	},
+	{
+		"user_no" : 4,
+		"user_name" : "박혁거세",
+		"grade_code" : 3,
+		"overdue_date" : null
+	},
+	{
+		"user_no" : 5,
+		"user_name" : "김갑수",
+		"grade_code" : 3,
+		"overdue_date" : null
+	},
+	{
+		"user_no" : 6,
+		"user_name" : "이진진",
+		"grade_code" : 1,
+		"overdue_date" : null
+	},
+	{
+		"user_no" : 7,
+		"user_name" : "박이수",
+		"grade_code" : 2,
+		"overdue_date" : null
+	}
+]
