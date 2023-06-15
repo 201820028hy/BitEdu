@@ -1,4 +1,6 @@
-package java.DTO;
+package work.dto;
+
+import org.json.simple.JSONObject;
 
 public class BookDTO {
 	private int bookNo;
@@ -62,5 +64,20 @@ public class BookDTO {
 	}
 	public void setCategoryName(String categoryName) {
 		this.categoryName = categoryName;
+	}
+	
+	@Override
+	public String toString() {
+		// TODO Auto-generated method stub
+		JSONObject jsonObject = new JSONObject();
+		jsonObject.put("bookNo", getBookNo());
+		jsonObject.put("title", getTitle());
+		jsonObject.put("content", getContent());
+		jsonObject.put("author", getAuthor());
+		jsonObject.put("rentalCheck", getRentalCheck());
+		jsonObject.put("displayCheck", getDisplayCheck());
+		jsonObject.put("categoryName", getCategoryName());
+		
+		return jsonObject.toJSONString();
 	}
 }
