@@ -114,6 +114,18 @@ a {
 .btn_m_red:hover {
 	background-color: #db3c3c;
 }
+
+.btn_s_blue {
+	border: none;
+	border-radius: 3px;
+	background-color: #8ac6df;
+	padding: 5px 5px;
+	color: white;
+	font-weight: bold;
+}
+.btn_s_blue:hover {
+	background-color: #64b4ed;
+}
 .btn_m_blue {
 	border: none;
 	border-radius: 3px;
@@ -138,7 +150,20 @@ a {
 .btn-submit:hover {
     background-color: 	#64b4ed	;
 }
-input {padding: 10px; border-radius: 3px; border: 1px solid #9f9f9f;}
+.btn_s_grey {
+	border: none;
+	border-radius: 3px;
+	background-color: #838383;
+	padding: 5px 5px;
+	color: white;
+	font-weight: bold;
+}
+.btn_s_grey:hover {
+	background-color: #636363;
+}
+
+
+input, textarea {padding: 10px; border-radius: 3px; border: 1px solid #9f9f9f;}
 select {padding: 10px;border-radius: 3px; border: 1px solid #9f9f9f;}
 .flex_1 {flex: 1;}
 
@@ -264,6 +289,10 @@ main .contents {
     margin: 0px 0px 20px 0px;
     box-shadow: 2px 3px 8px lightgray;
 }
+.content_section h2 {
+	margin-left: 40px;
+	padding-top: 10px;
+}
 .content_section ul {
 	display: flex;
 	width: 40%;
@@ -309,9 +338,28 @@ main .contents {
 .overdue_tbl thead tr {background-color: gainsboro;}
 .overdue_tbl thead tr th {border-right: 1px solid #c7c5c5; padding: 10px;}
 .overdue_tbl tbody {text-align: center;}
-.overdue_tbl tbody tr {background-color: white}
+.overdue_tbl tbody tr, .join_tbl tr {background-color: white}
 .overdue_tbl tbody tr:hover {background-color: #eee; cursor: pointer;}
 .overdue_tbl tbody tr td { height: 30px; padding: 8px 0px; border-bottom: 1px dashed #ddd; border-right: 1px solid #ddd;}
+
+.join_tbl {
+	width: 100%;
+	padding: 20px;
+}
+.join_tbl input, .join_tbl select, .join_tbl textarea { margin: 0px 20px; }
+.join_tbl tr th, .join_tbl tr td {
+	height: 30px;
+	padding: 8px 0px;
+}
+.join_tbl tr th {
+	background-color: gainsboro;
+	/* border-right: 1px solid #c7c5c5; */
+	border-bottom: 1px dashed #fff;
+}
+.join_tbl tr td {
+	background-color: white;
+	border-bottom: 1px dashed #ddd;
+}
 
 .paging_ul { 
 	margin-top: 20px;
