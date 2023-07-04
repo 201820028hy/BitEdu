@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Registration</title>
+    <style>
+        table, td, th {
+            border : 1px solid black;
+            border-collapse: collapse;
+            margin: 20px auto;
+        }
+        td {
+            width: 150px;
+            height: 50px;
+            padding: 5px;
+            font-size: 20px;
+            /* text-align: center; */
+        }
+
+        input , select {
+            font-size: 20px;
+        }
+        .data_ui {
+            width: 450px; 
+            height: 50px;
+        }
+
+        button {
+            font-size: 15px;
+            margin: 5px;
+        }
+        
+        
+        #sending {
+        	text-align: center;
+        }
+        
+        input.poster :disabled {
+        	background: gray;
+        }
+        
+        #form {
+        	font-size: 30px;
+        }
+    </style>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-latest.min.js"></script>
+    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+    <script type="text/javascript">
+		var isChecked = false;
+		$(function() {
+			setBirth(); //생년월 기본 초기화
+			/*
+			$("#save").on("click", function(e) {
+				e.preventDefault();
+				let flag = checkConfirm();
+				if(!flag) {
+					return false;
+				}
+				//alert("가입완료");
+				window.location.href = "result.html";
+			})*/
+		})
+		
+		//아이디 유효성 및 중복검사
+		function checkId() {
+			let id = $("#user_id");
+			let idReg = /^[a-z].{5,8}$/g;
+			if(!idReg.test(id.val())) {
+				alert("아이디 유효성을 확인해주세요.");
+				id.focus();
+				return false;
+			}
+			
+			$.ajax({
+				url: "/MemberSample/memberController",
+				data: {"user_id": $("#user_id").val()},
+				method: "get",
+				success: function(response) {
+					if(response.result) {
+						alert("사용 가능한 아이디 입니다.");
+						isChecked = true;
+						$("#btn_check_id").attr("disabled", "true");
+						$("#user_id").attr("readonly", "readonly");
+					} else {
+						alert("사용이 불가능한 아이디 입니다.");
+						isChecked = false;
+						$("#user_id").focus();
+					}
+				},
+				error: function(err) {
+					alert("에러 발생");
+				}
+			})
+		}
+		
+		//비밀번호 검사
+		function checkPass() {
+			if($("#pass").val() != $("#pass_check").val()) {
+				$("#pass_isCheck").text("비밀번호가 일치하지 않습니다.");
+				return false;
+			} else {
+				$("#pass_isCheck").text("");
+			}
+			return true;
+		}
+		
+		//우편번호 검색 및 주소 입력
+		function checkPostCode() {
+			/*$("#post_code").val("45125");
+			$("#addr1").val("부산시 연제구 온천천남로");
+			$("#addr2").val("한양1차아파트 6동");*/
+			
+			new daum.Postcode({
+		        oncomplete: function(data) {
+					$("#post_code").val(data.zonecode);
+					$("#addr1").val(data.address + (data.buildingName ? " (" + data.buildingName + ")" : ""));
+					$("#addr2").focus();
+		            // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분입니다.
+		            // 예제를 참고하여 다양한 활용법을 확인해 보세요.
+		        }
+		    }).open();
+		}
+		
+		//생년월일 설정
+		function setBirth(bool) {
+			$("#birth_date").html("<option value=''>일</option>");
+			if(!bool) {
+				$("#birth_year").html("<option value=''>년도</option>");
+				$("#birth_month").html("<option value=''>월</option>");
+				
+				for(let i = 1900; i <= 2050; i++) {
+					$("#birth_year").append(`<option value="${i}">${i}</option>`);
+				}
+				for(let i = 1; i <= 12; i++) {
+					$("#birth_month").append(`<option value="${i}">${i}</option>`);
+				}
+			} else {
+				let date = new Date($("#birth_year").val(), $("#birth_month").val(), 0);
+				for(let i = 1; i <= date.getDate(); i++) {
+					$("#birth_date").append(`<option value="${i}">${i}</option>`);
+				}
+			}
+		}
+		
+		//저장 전 유효성 검사
+		function checkConfirm() {
+			let flag = true;
+			let chkArr = [
+				{"key":"user_id", "msg": "아이디를 입력해주세요."},
+				{"key":"pass", "msg": "비밀번호를 입력해주세요."},
+				{"key":"pass_check", "msg": "비밀번호 확인을 입력해주세요."},
+				{"key":"user_name", "msg": "이름을 입력해주세요."},
+				{"key":"post_code", "msg": "우편번호를 입력해주세요."},
+				{"key":"addr1", "msg": "주소를 입력해주세요."},
+				{"key":"addr2", "msg": "주소를 입력해주세요."},
+				{"key":"birth_year", "msg": "생년월일을 입력해주세요."},
+				{"key":"birth_month", "msg": "생년월일을 입력해주세요."},
+				{"key":"birth_date", "msg": "생년월일을 입력해주세요."}
+			];
+			
+			$.each(chkArr, function(index, json) {
+				if(!$("#" + json.key).val()) {
+					alert(json.msg);
+					$("#" + json.key).focus()
+					flag = false;
+					return false;
+				}
+			})
+			
+			if(!flag) {
+				return flag;
+			}
+			
+			if(!isChecked) {
+				alert("아이디를 확인해주세요.");
+				return false;
+			}
+			
+			if($("input[name='gender']:checked").length < 1) {
+				alert("성별을 선택해주세요.");
+				return false;
+			}
+			
+			if($("input[name='favr']:checked").length < 2) {
+				alert("관심분야를 2~3가지 선택해주세요.");
+				return false;
+			}
+			
+			if(!checkPass()) {
+				alert("비밀번호가 일치하지 않습니다.");
+				$("#pass").focus();
+				return false;
+			}
+			
+			return flag;
+		}
+		
+		//초기화 버튼 클릭 시 id부분 후처리
+		function setReset() {
+			isChecked = false;
+			$("#btn_check_id").removeAttr("disabled");
+			$("#user_id").removeAttr("readonly");
+		}
+	</script>
+</head>
+<body>
+<form action="/MemberSample/memberController" method="post" accept-charset="UTF-8">
+    <table>
+        <tr><th colspan="5" id="form">회원가입양식</th></tr>
+        <tr><th>구분</th><th class="data_ui" colspan="2">데이터입력</th><th>유효성검사</th><th>비고</th></tr>
+        <tr>
+            <td>아이디</td>
+            <td colspan="2"><input type="text" id="user_id" name="user_id"><button id="btn_check_id" onclick="checkId()" type="button">아이디확인</button></td>
+            <td>8자리 , 첫글자 영문소문자</td><td></td></tr>
+        <tr><td>비밀번호</td><td colspan="2"><input type="password" id="pass" name="pass" onkeyup="checkPass()"/></td><td rowspan="2">비밀번호 일치</td><td></td></tr>
+        <tr><td>비번확인</td><td colspan="2"><input type="password" id="pass_check" name="pass_check" onkeyup="checkPass()"/></td><td id="pass_isCheck" style="color:red;"></td></tr>
+        <tr><td>이름</td><td colspan="2"><input type="text" id="user_name" name="user_name"/></td><td>필수입력</td><td></td></tr>
+        <tr><td>우편번호</td><td colspan="2"><input type="text" id="post_code" name="post_code" readonly="readonly"/><button onclick="checkPostCode()" type="button">우편번호찾기</button></td><td rowspan="3">필수입력</td><td></td></tr>
+        <tr><td>주소1</td><td colspan="2"><input type="text" id="addr1" name="addr1" readonly="readonly" style="width:90%;"/></td><td></td></tr>
+        <tr><td>주소2</td><td colspan="2"><input type="text" id="addr2" name="addr2" style="width:90%;"/></td><td></td><tr>
+        <tr>
+            <td>생년월일</td>
+            <td colspan="2">
+				<select id="birth_year" name="birth_year"></select> -
+				<select id="birth_month" name="birth_month" onchange="setBirth(true)"></select> -
+				<select id="birth_date" name="birth_date"></select>
+            </td><td>년도는 1900~2050, 월은 1~12, 일은 1~31</td><td>2개중 하나 선택</td></tr>
+        <tr>
+            <td>성별</td>
+            <td colspan="2">
+				<label><input type="radio" id="gender_m" name="gender" value="m"/> 남</label>
+				<label><input type="radio" id="gender_f" name="gender" value="f"/> 여</label>
+            </td><td>필수 선택</td><td></td></tr>
+        <tr>
+            <td>관심분야</td>
+            <td colspan="2">
+				<label><input type="checkbox" id="favr_001" name="favr" value="001"/> 문학</label>
+				<label><input type="checkbox" id="favr_002" name="favr" value="002"/> 어학</label>
+				<label><input type="checkbox" id="favr_003" name="favr" value="003"/> 정보IT</label><br/>
+				<label><input type="checkbox" id="favr_004" name="favr" value="004"/> 과학</label>
+				<label><input type="checkbox" id="favr_005" name="favr" value="005"/> 수학</label>
+				<label><input type="checkbox" id="favr_006" name="favr" value="006"/> 예술</label>
+            </td><td>2~3개 사이 선택</td><td></td>
+        </tr>
+        <tr><td>자기소개</td><td colspan="2"><textarea id="intro" name="intro" cols="50" rows="10"></textarea></td><td></td><td></td></tr>    
+        <tr><td colspan="5" id="sending"><input type="submit" value="가입" id="save"> <input type="reset" onclick="setReset()"></td></tr>
+    </table>
+</form>
+</body> 
+</html>
