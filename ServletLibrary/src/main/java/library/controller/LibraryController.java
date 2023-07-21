@@ -27,7 +27,7 @@ public class LibraryController extends HttpServlet {
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		//resp.setContentType("application/json; charset=UTF-8"); tq 이러게 쓰니까 상태가 200인데도 error로 담김 html로 변경
-		resp.setContentType("text/html; charset=UTF-8");
+		resp.setContentType("text/html; charset=UTF-8");//브라우저로 보낼 때 UTF-8
 		LibraryService service = new LibraryService();
 		String url = "./library/book_list.jsp";
 		
@@ -86,8 +86,8 @@ public class LibraryController extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		resp.setContentType("text/html; charset=UTF-8");
-		req.setCharacterEncoding("UTF-8");
+		resp.setContentType("text/html; charset=UTF-8");//브라우저로 보낼 때 UTF-8
+		req.setCharacterEncoding("UTF-8");//요청에 대한 UTF-8
 		//PrintWriter writer = resp.getWriter();
 		
 		String bookSeq = req.getParameter("book_seq");
